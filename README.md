@@ -4,7 +4,7 @@ driver.
 
 # Usage
 
-Given the official driver declared as follows:
+Given the node-neo4j community driver declared as follows: 
 
 ```javascript 1.6
 const Promise = require('bluebird')
@@ -17,7 +17,7 @@ module.exports = db;
 
 ```
 
-And used as follows:
+And used like:
  
  ```javascript 1.6
 
@@ -31,14 +31,14 @@ db.cypherQueryAsync(`MATCH (u:User) WHERE u.applicationToken = {applicationToken
     });
 ```
 
-Define the adapter as: 
+We can define an adapter for the official bolt driver: 
 
 ```javascript 1.6
 //Will use env.DB_HOST, env.DB_USER and env.DB_PW
 const db = require('node-neo4j-bolt-adapter')
 ```
 
-And use it as: 
+And use it as an API compatible drop-in replacement for the community driver. 
 
 ```javascript 1.6
 
