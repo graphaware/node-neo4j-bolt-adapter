@@ -38,18 +38,22 @@ We can define an adapter for the official bolt driver:
 const db = require('node-neo4j-bolt-adapter')
 ```
 
-And use it as an API compatible drop-in replacement for the community driver. 
+And use it as an API compatible drop-in replacement:
+
+##For a read transaction:
 
 ```javascript 1.6
-
-//For read transactions: 
 db.cypherQueryAsync(`MATCH (u:User) WHERE u.applicationToken = {applicationToken} RETURN U`, 
     {applicationToken: 1234})
     .then(result => {
         //result.columns describes format
         //When a single record is return result.data contains an object, otherwise an array of objects.  
     });
+```    
 
+A session will be opened and a transaction initiated, with auto commit or rollback if an error is thrown. On completion the session will be closed. 
+
+##For a write transaction
 
 //For write transactions 
 db.writeQueryAsync(`CREATE (u:User {name: 'Fred'}) return u`)
@@ -59,6 +63,12 @@ db.writeQueryAsync(`CREATE (u:User {name: 'Fred'}) return u`)
     });
 
 ```
+
+Similar to a read transaction, a session will be opened and a transaction initiated. The session is closed on completion. 
+
+## Note
+
+Currently access mode and read/write transaction functions in the official driver are mostly hints. They are not yet translated to access mode on the server - only used by routing driver to decide where to point the request. Until that behavior changes, it is possible to write in a read transaction. 
 
 
 
