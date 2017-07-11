@@ -40,7 +40,7 @@ const db = require('node-neo4j-bolt-adapter')
 
 And use it as an API compatible drop-in replacement:
 
-##For a read transaction:
+## For a read transaction:
 
 ```javascript 1.6
 db.cypherQueryAsync(`MATCH (u:User) WHERE u.applicationToken = {applicationToken} RETURN U`, 
@@ -53,8 +53,9 @@ db.cypherQueryAsync(`MATCH (u:User) WHERE u.applicationToken = {applicationToken
 
 A session will be opened and a transaction initiated, with auto commit or rollback if an error is thrown. On completion the session will be closed. 
 
-##For a write transaction
+## For a write transaction
 
+```javascript 1.6
 //For write transactions 
 db.writeQueryAsync(`CREATE (u:User {name: 'Fred'}) return u`)
     .then(result => {
