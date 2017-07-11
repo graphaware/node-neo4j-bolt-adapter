@@ -1,0 +1,34 @@
+{
+  "name": "node-neo4j-bolt-adapter",
+  "version": "1.0.0",
+  "description": "An adapter for the official neo4j-javascript-driver, allowing it to be used as a drop-in replacement for the node-neo4j community driver. ",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter spec --recursive --timeout 5000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/appsquickly/node-neo4j-bolt-adapter.git"
+  },
+  "keywords": [
+    "neo4j",
+    "bolt",
+    "official",
+    "community",
+    "adapter"
+  ],
+  "author": "Jasper Blues",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "neo4j-driver": "^1.3.0"
+  },
+  "devDependencies": {
+    "fs-readfile-promise": "^3.0.0",
+    "mocha": "^3.4.2",
+    "chai": "^4.0.2"
+  },
+  "bugs": {
+    "url": "https://github.com/appsquickly/node-neo4j-bolt-adapter/issues"
+  },
+  "homepage": "https://github.com/appsquickly/node-neo4j-bolt-adapter#readme"
+}
