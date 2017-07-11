@@ -10,7 +10,8 @@ Given the official driver declared as follows:
 const Promise = require('bluebird')
 const neo4j = require('node-neo4j')
 const dev = require('./dev')
-const db = Promise.promisifyAll(new neo4j(`http://${process.env.DB_USER}:${process.env.DB_PW}@${process.env.DB_HOST}:7474`))
+const db = Promise.promisifyAll(new neo4j(
+  `http://${process.env.DB_USER}:${process.env.DB_PW}@${process.env.DB_HOST}:7474`))
 
 module.exports = db;
 
@@ -22,7 +23,8 @@ And used as follows:
 
 const db = require('db')
 
-db.cypherQueryAsync(`MATCH (u:User) WHERE u.applicationToken = {applicationToken} RETURN U`, {applicationToken: 1234})
+db.cypherQueryAsync(`MATCH (u:User) WHERE u.applicationToken = {applicationToken} RETURN U`, 
+    {applicationToken: 1234})
     .then(result => {
         //result.columns describes format
         //When a single record is return result.data contains an object, otherwise an array of objects.  
@@ -41,7 +43,8 @@ And use it as:
 ```javascript 1.6
 
 //For read transactions: 
-db.cypherQueryAsync(`MATCH (u:User) WHERE u.applicationToken = {applicationToken} RETURN U`, {applicationToken: 1234})
+db.cypherQueryAsync(`MATCH (u:User) WHERE u.applicationToken = {applicationToken} RETURN U`, 
+    {applicationToken: 1234})
     .then(result => {
         //result.columns describes format
         //When a single record is return result.data contains an object, otherwise an array of objects.  
