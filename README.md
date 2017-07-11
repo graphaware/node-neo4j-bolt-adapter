@@ -52,7 +52,7 @@ db.cypherQueryAsync(`MATCH (u:User) WHERE u.applicationToken = {applicationToken
 
 
 //For write transactions 
-db.cypherQueryAsync(`CREATE (u:User {name: 'Fred'}) return u`)
+db.writeQueryAsync(`CREATE (u:User {name: 'Fred'}) return u`)
     .then(result => {
         //result.columns describes format
         //When a single record is return result.data contains an object, otherwise an array of objects.  
