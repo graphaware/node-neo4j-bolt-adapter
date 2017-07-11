@@ -99,6 +99,7 @@ let self = module.exports = {
                     session.close();
                     resolve(mapToNative(result.records))
                 }).catch(err => {
+                    session.close()
                     reject(err)
                 })
             })
@@ -116,6 +117,7 @@ let self = module.exports = {
                     session.close();
                     resolve(mapToNative(result.records))
                 }).catch(err => {
+                    session.close()
                     reject(err)
                 })
             })
