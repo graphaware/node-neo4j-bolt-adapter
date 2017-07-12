@@ -19,7 +19,6 @@ describe('Bolt driver converter', () => {
 
         let authToken = neo.auth.basic(process.env.DB_USER, process.env.DB_PW);
         boltAdapter = new BoltAdapter(neo.driver(`bolt://${process.env.DB_HOST}`, authToken));
-        console.log("Got adapter " + boltAdapter)
     });
 
     after(() => {
