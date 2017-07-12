@@ -34,8 +34,9 @@ db.cypherQueryAsync(`MATCH (u:User) WHERE u.applicationToken = {applicationToken
 We can define an adapter for the official bolt driver: 
 
 ```javascript 1.6
-//Will use env.DB_HOST, env.DB_USER and env.DB_PW
-const db = require('node-neo4j-bolt-adapter')
+const neo = require('neo4j-driver').v1;
+const authToken = neo.auth.basic(userName, password);
+const db = new BoltAdapter(neo.driver(`bolt://localhost`, authToken));
 ```
 
 And use it as an API compatible drop-in replacement:
@@ -65,7 +66,14 @@ db.writeQueryAsync(`CREATE (u:User {name: 'Fred'}) return u`)
 
 ```
 
-Similar to a read transaction, a session will be opened and a transaction initiated. The session is closed on completion. 
+Similar to a read transaction, a session will be opened and a transaction initiated. The session is closed on completion.
+ 
+## Closing
+ 
+```javascript 1.6
+//We can keep a reference, or alternatively, this will call close() on the underlying bolt driver. 
+db.close() 
+```
 
 ## Note
 
