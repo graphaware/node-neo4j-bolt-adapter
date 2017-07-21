@@ -8,28 +8,34 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+const neo = require('neo4j-driver').v1;
 const Mapper = require('./Mapper');
 
 class BoltAdapter {
 
-    constructor(driver) {
-        this.driver = driver;
-        this.mapper = new Mapper()
+    constructor(url, user, pass) {
+        this.url = url;
+        this.user = user;
+        this.pass = pass;
+        this.mapper = new Mapper();
     }
 
     cypherQueryAsync(query, params) {
 
-        let self = this;
+        const self = this;
         return new Promise(function (resolve, reject) {
 
-            let session = self.driver.session();
+            const driver = neo.driver(self.url, neo.auth.basic(self.user, self.pass));
+            const session = driver.session();
             session.readTransaction(transaction => {
 
                 transaction.run(query, params).then(result => {
                     session.close();
+                    driver.close();
                     resolve(self.mapper.mapToNative(result.records))
                 }).catch(err => {
                     session.close();
+                    driver.close();
                     reject(err)
                 })
             })
@@ -41,23 +47,24 @@ class BoltAdapter {
         let self = this;
         return new Promise(function (resolve, reject) {
 
-            let session = self.driver.session();
+            const driver = neo.driver(self.url, neo.auth.basic(self.user, self.pass));
+            const session = driver.session();
+
             session.writeTransaction(transaction => {
 
                 transaction.run(query, params).then(result => {
                     session.close();
+                    driver.close();
                     resolve(self.mapper.mapToNative(result.records))
                 }).catch(err => {
                     session.close();
+                    driver.close();
                     reject(err)
                 })
             })
         })
     }
 
-    close() {
-        this.driver.close()
-    }
 }
 
 module.exports = BoltAdapter;
