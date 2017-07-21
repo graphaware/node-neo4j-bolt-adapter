@@ -10,14 +10,14 @@
 
 const neo = require('neo4j-driver').v1;
 const Mapper = require('./Mapper');
+const Utils = require('./Utils');
 
 class BoltAdapter {
 
-    constructor(url, user, pass) {
-        this.url = url;
-        this.user = user;
-        this.pass = pass;
+    constructor(driver) {
+        this.driver = driver;
         this.mapper = new Mapper();
+        this.utils = new Utils();
     }
 
     cypherQueryAsync(query, params) {
@@ -25,47 +25,40 @@ class BoltAdapter {
         const self = this;
         return new Promise(function (resolve, reject) {
 
-            const driver = neo.driver(self.url, neo.auth.basic(self.user, self.pass));
-            const session = driver.session();
-            session.readTransaction(transaction => {
+            const session = self.driver.session();
+            const readPromise = session.readTransaction(transaction => transaction.run(query, params));
 
-                transaction.run(query, params).then(result => {
-                    session.close();
-                    driver.close();
-                    resolve(self.mapper.mapToNative(result.records))
-                }).catch(err => {
-                    session.close();
-                    driver.close();
-                    reject(err)
-                })
+            readPromise.then(result => {
+                session.close();
+                resolve(self.mapper.mapToNative(result.records))
+            }).catch(err => {
+                session.close();
+                reject(err)
             })
         })
     }
 
     writeQueryAsync(query, params) {
 
-        let self = this;
-        return new Promise(function (resolve, reject) {
+        const self = this;
+        return new Promise((resolve, reject) => {
 
-            const driver = neo.driver(self.url, neo.auth.basic(self.user, self.pass));
-            const session = driver.session();
+            const session = self.driver.session();
+            const writePromise = session.writeTransaction(transaction => transaction.run(query, params));
 
-            session.writeTransaction(transaction => {
-
-                transaction.run(query, params).then(result => {
-                    session.close();
-                    driver.close();
-                    resolve(self.mapper.mapToNative(result.records))
-                }).catch(err => {
-                    session.close();
-                    driver.close();
-                    reject(err)
-                })
+            writePromise.then(result => {
+                session.close();
+                resolve(self.mapper.mapToNative(result.records))
+            }).catch(err => {
+                session.close();
+                reject(err)
             })
         })
     }
 
+    close() {
+        this.driver.close()
+    }
 }
 
 module.exports = BoltAdapter;
-

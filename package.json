@@ -1,6 +1,6 @@
 {
   "name": "node-neo4j-bolt-adapter",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "An adapter for the official neo4j-javascript-driver, allowing it to be used as a drop-in replacement for the node-neo4j community driver. ",
   "main": "index.js",
   "scripts": {

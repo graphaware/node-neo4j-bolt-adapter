@@ -16,7 +16,12 @@ describe('Bolt driver converter', () => {
     let boltAdapter;
 
     before(() => {
-        boltAdapter = new BoltAdapter("bolt://localhost", "neo4j", "h4ckM3");
+        const authToken = neo.auth.basic("neo4j", "h4ckM3");
+        boltAdapter = new BoltAdapter(neo.driver("bolt://localhost", authToken));
+    });
+
+    after(() => {
+        boltAdapter.close()
     });
 
 
