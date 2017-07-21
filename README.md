@@ -71,7 +71,7 @@ Similar to a read transaction, a session will be opened and a transaction initia
 ## Closing
  
 ```javascript 1.6
-//We can keep a reference, or alternatively, this will call close() on the underlying bolt driver. 
+//We can keep a reference, or alternatively, to close the underlying bolt driver
 db.close() 
 ```
 
