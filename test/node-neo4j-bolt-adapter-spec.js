@@ -52,9 +52,9 @@ describe('Bolt driver converter', () => {
 
     });
 
-    // /**
-    //  * This will fail until the underlying bolt driver supports read/write transactions.
-    //  */
+    /**
+     * This will fail until the underlying bolt driver supports read/write transactions.
+     */
     // it('should not be able to perform writes in a read txn', (done) => {
     //     boltAdapter.cypherQueryAsync('CREATE (p:Person {name: "Jasper Blues", born: 1976}) RETURN p')
     //         .then(result => {

@@ -10,14 +10,12 @@
 
 const neo = require('neo4j-driver').v1;
 const Mapper = require('./Mapper');
-const Utils = require('./Utils');
 
 class BoltAdapter {
 
     constructor(driver) {
         this.driver = driver;
         this.mapper = new Mapper();
-        this.utils = new Utils();
     }
 
     cypherQueryAsync(query, params) {
