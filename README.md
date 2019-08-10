@@ -34,9 +34,9 @@ db.cypherQueryAsync(`MATCH (u:User) WHERE u.applicationToken = {applicationToken
 We can define an adapter for the official bolt driver: 
 
 ```javascript 1.6
-const neo = require('neo4j-driver').v1;
+const neo = require('neo4j-driver');
 const authToken = neo.auth.basic(userName, password);
-const db = new BoltAdapter(neo.driver(`bolt://localhost`, authToken));
+const db = new BoltAdapter(neo.driver(`bolt://localhost`, authToken), neo);
 ```
 
 And use it as an API compatible drop-in replacement:
