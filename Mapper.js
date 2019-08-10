@@ -8,13 +8,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-const neo4j = require('neo4j-driver');
+var neo4j;
 
 class Mapper {
 
-    constructor() {
+    constructor(lib) {
+      neo4j = lib;
     }
-
 
     mapToNative(records) {
 
@@ -59,9 +59,10 @@ class Mapper {
 
 const toNative = function (val) {
     if (val === null) return val;
-    if (val instanceof neo4j.v1.types.Node) return toNative(val.properties);
-    if (val instanceof neo4j.v1.types.Relationship) return toNative(val.properties);
-    if (neo4j.v1.isInt(val)) return val.toNumber();
+    if (val instanceof neo4j.types.Node) return toNative(val.properties);
+    if (val instanceof neo4j.types.Relationship) return toNative(val.properties);
+    if (val instanceof neo4j.types.Point) return val;
+    if (neo4j.isInt(val)) return val.toNumber();
     if (Array.isArray(val)) return val.map(a => toNative(a));
     if (isRecord(val)) return toNative(recordToNative(val));
     if (typeof val === 'object') return mapObj(toNative, val);
